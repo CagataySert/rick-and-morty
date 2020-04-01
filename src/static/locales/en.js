@@ -14,9 +14,17 @@ const dictionary = {
       characters: 'Characters',
       species: 'Species',
       gender: 'Gender',
-      status: 'Status'
+      status: 'Status',
+      all: 'All',
+      male: 'Male',
+      female: 'Female',
+      greaterThan: 'Greater Than 20',
+      lowerThan: 'Lower Than 20'
     },
-    placeholders: {},
+    placeholders: {
+      selectGender: 'Select a gender..',
+      selectCharacterCount: 'Character Count Range'
+    },
     messages: {}
   }
 };

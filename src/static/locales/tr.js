@@ -13,9 +13,17 @@ const dictionary = {
       characters: 'Karakterler',
       species: 'Tür',
       gender: 'Cinsiyet',
-      status: 'Durum'
+      status: 'Durum',
+      all: 'Hepsi',
+      male: 'Erkek',
+      female: 'Kadın',
+      greaterThan: "20'den daha fazla",
+      lowerThan: "20'den daha az"
     },
-    placeholders: {},
+    placeholders: {
+      selectGender: 'Cinsiyet seçiniz..',
+      selectCharacterCount: 'Karater Sayısı Aralığı'
+    },
     messages: {}
   }
 };

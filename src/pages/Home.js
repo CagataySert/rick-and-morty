@@ -1,10 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FETCH_EPISODES } from '../redux/actions/episode';
 import useFetch from '../hooks/useFetch';
-import { Spin, Card, Tooltip, Row, Col, Pagination } from 'antd';
+import { Spin, Card, Tooltip, Row, Col, Pagination, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+
+const { Option } = Select;
 
 const Home = () => {
   //hooks
@@ -12,12 +14,36 @@ const Home = () => {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const { response, error, isLoading } = useFetch('/episode', page);
+  const [episodes, setEpisodes] = useState([]);
 
-  const episodes = useSelector(state => state.episode.data);
+  const episodesData = useSelector(state => state.episode.data);
+
+  useEffect(() => {
+    setEpisodes(episodesData);
+  }, [setEpisodes, episodesData]);
 
   const handleChangePage = useCallback(e => {
     setPage(e);
   }, []);
+
+  const handleFilterChange = useCallback(
+    e => {
+      if (e === 'greater') {
+        const filteredData = episodesData.filter(
+          episode => episode.characters.length > 20
+        );
+        setEpisodes(filteredData);
+      } else if (e === 'lower') {
+        const filteredData = episodesData.filter(
+          episode => episode.characters.length <= 20
+        );
+        setEpisodes(filteredData);
+      } else {
+        setEpisodes(episodesData);
+      }
+    },
+    [episodesData]
+  );
 
   if (error) {
     console.error(error.message);
@@ -27,10 +53,24 @@ const Home = () => {
   if (response) {
     dispatch({ type: FETCH_EPISODES, payload: response.results });
   }
+
   return (
     <Spin spinning={isLoading}>
       <Row style={styles.row}>
-        <label>Rick And Morty {t('titles.episodes')}</label>
+        <Col span={8}>
+          <label>Rick And Morty {t('titles.episodes')}</label>
+        </Col>
+        <Col offset={8} span={8}>
+          <Select
+            placeholder={t('placeholders.selectCharacterCount')}
+            style={styles.select}
+            onChange={handleFilterChange}
+          >
+            <Option value="all">{t('labels.all')}</Option>
+            <Option value="greater">{t('labels.greaterThan')}</Option>
+            <Option value="lower">{t('labels.lowerThan')}</Option>
+          </Select>
+        </Col>
       </Row>
       <Row style={styles.row}>
         {episodes &&
@@ -94,7 +134,8 @@ const styles = {
   },
   label: {
     color: '#fff'
-  }
+  },
+  select: { width: 200, float: 'right' }
 };
 
 export default Home;

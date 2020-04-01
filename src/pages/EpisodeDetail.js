@@ -71,7 +71,7 @@ const EpisodeDetail = () => {
           </label>
 
           <div style={styles.charactersWrapper}>
-            <Row>
+            <Row style={styles.row}>
               <Col span={8}>
                 <label style={styles.title}>{t('labels.characters')}</label>
               </Col>
@@ -116,6 +116,9 @@ const styles = {
     marginTop: 20
   },
   col: {
+    marginBottom: 20
+  },
+  row: {
     marginBottom: 20
   }
 };
